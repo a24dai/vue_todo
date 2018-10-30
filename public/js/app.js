@@ -990,24 +990,44 @@ window.Vue = __webpack_require__(35);
 // Vue.component('example', require('./components/Example.vue'));
 
 var app = new Vue({
-    el: '#app',
-    data: {
-        todos: [] // TODOを格納するための配列
-    },
-    methods: {
-        fetchTodos: function fetchTodos() {
-            var _this = this;
+  el: '#app',
+  data: {
+    new_todo: '',
+    todos: [] //←TODOを格納するための配列を用意
+  },
+  methods: {
+    fetchTodos: function fetchTodos() {
+      var _this = this;
 
-            // axios.getでTODOリストを取得するためのメソッド
-            axios.get('/api/get').then(function (res) {
-                _this.todos = res.data; // 取得したTODOリストをtodosに格納
-            });
-        }
+      //←axios.getでTODOリストを取得しています
+      axios.get('/api/get').then(function (res) {
+        _this.todos = res.data; //←取得したTODOリストをtodosに格納
+      });
     },
-    created: function created() {
-        // インスタンス生成時にfetchTodos()を実行したいので、createdフックに登録
-        this.fetchTodos();
+    addTodo: function addTodo() {
+      var _this2 = this;
+
+      axios.post('/api/add', {
+        title: this.new_todo
+      }).then(function (res) {
+        _this2.todos = res.data;
+        _this2.new_todo = '';
+      });
+    },
+    deleteTodo: function deleteTodo(task_id) {
+      var _this3 = this;
+
+      axios.post('/api/del', {
+        id: task_id
+      }).then(function (res) {
+        _this3.todos = res.data;
+      });
     }
+  },
+  created: function created() {
+    //←インスタンス生成時にfetchTodos()を実行したいので、createdフックに登録します。
+    this.fetchTodos();
+  }
 });
 
 /***/ }),

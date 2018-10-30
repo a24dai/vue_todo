@@ -18,19 +18,36 @@ window.Vue = require('vue');
 // Vue.component('example', require('./components/Example.vue'));
 
 const app = new Vue({
-    el: '#app',
-    data: {
-        todos: [] // TODOを格納するための配列
+  el: '#app',
+  data: {
+    new_todo: '',
+    todos: [] //←TODOを格納するための配列を用意
+  },
+  methods: {
+    fetchTodos: function(){ //←axios.getでTODOリストを取得しています
+      axios.get('/api/get').then((res)=>{
+        this.todos = res.data //←取得したTODOリストをtodosに格納
+      })
     },
-    methods: {
-        fetchTodos: function(){ // axios.getでTODOリストを取得するためのメソッド
-            axios.get('/api/get').then((res)=>{
-                this.todos = res.data // 取得したTODOリストをtodosに格納
-            })
-        }
+    addTodo: function(){
+      axios.post('/api/add',{
+        title: this.new_todo
+      }).then((res)=>{
+        this.todos = res.data
+        this.new_todo = ''
+      })
     },
-    created() { // インスタンス生成時にfetchTodos()を実行したいので、createdフックに登録
-        this.fetchTodos()
-    },
+    deleteTodo: function(task_id){
+      axios.post('/api/del',{
+        id: task_id
+      }).then((res)=>{
+        this.todos = res.data
+      })
+    }
+  },
+  created() {  //←インスタンス生成時にfetchTodos()を実行したいので、createdフックに登録します。
+    this.fetchTodos()
+  },
+
 });
 
