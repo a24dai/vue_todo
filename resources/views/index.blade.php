@@ -2,14 +2,16 @@
   <html lang="{{ app()->getLocale() }}">
     <head>
       <meta charset="utf-8">
-      <meta name="csrf-token" content="{{ csrf_token() }}"> <!-- ←① -->
+      <meta name="csrf-token" content="{{ csrf_token() }}">
+      <!-- Laravelでajax通信を行うにはCSRF対策でheadに上記を記述する必要あり -->
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
       <meta name="viewport" content="width=device-width, initial-scale=1">
-      <link rel="stylesheet" href="{{ asset('css/app.css') }}"> <!-- ←② -->
+      <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+      <!-- npmで生成したapp.cssを読み込んでいる -->
       <title>Laravel-Vue-todo</title>
     </head>
     <body>
-      <div id="app"> <!-- ←③ -->
+      <div id="app">
         <div class="container">
           <div class="row">
             <div class="col-xs-12">
@@ -18,7 +20,7 @@
             <div class="col-xs-6">
               <table class="table">
                 <thead>
-                  <tr>
+                  <tr v-for="todo in todos" v-bind:key="todo.id">
                     <th>ID</th>
                     <th>タスク名</th>
                     <th>完了ボタン</th>
@@ -27,7 +29,7 @@
                 <tbody>
                   <tr>
                     <td>1</td>
-                    <td>お茶を汲む</td>
+                    <td>ご飯食べる</td>
                     <td><button class="btn btn-primary">完了</button></td>
                   </tr>
                 </tbody>
@@ -45,6 +47,7 @@
           </div>
         </div>
       </div>
-      <script src="{{ asset('js/app.js') }}"></script> <!-- ←④ -->
+      <script src="{{ asset('js/app.js') }}"></script>
+      <!-- npmで生成したapp.jsを読み込んでいる -->
     </body>
 </html>
