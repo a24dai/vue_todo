@@ -20,13 +20,14 @@ window.Vue = require('vue');
 const app = new Vue({
   el: '#app',
   data: {
+    isModalActive: false,
     new_todo: '',
     todos: [] //←TODOを格納するための配列を用意
   },
   methods: {
-    fetchTodos: function(){ //←axios.getでTODOリストを取得しています
+    fetchTodos: function(){ //axios.getでTODOリストを取得
       axios.get('/api/get').then((res)=>{
-        this.todos = res.data //←取得したTODOリストをtodosに格納
+        this.todos = res.data //取得したTODOリストをtodosに格納
       })
     },
     addTodo: function(){
@@ -43,9 +44,15 @@ const app = new Vue({
       }).then((res)=>{
         this.todos = res.data
       })
+    },
+    openModal: function(id){
+      this.toggleModal();
+    },
+    toggleModal: function(){
+      this.isModalActive = ! this.isModalActive;
     }
   },
-  created() {  //←インスタンス生成時にfetchTodos()を実行したいので、createdフックに登録します。
+  created() {  //インスタンス生成時にfetchTodos()を実行したいので、createdフックに登録
     this.fetchTodos()
   },
 

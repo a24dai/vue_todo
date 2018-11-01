@@ -7,9 +7,26 @@
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-      <!-- npmで生成したapp.cssを読み込んでいる -->
       <title>Laravel-Vue-todo</title>
     </head>
+    <style>
+    .p-modal {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      overflow-y: auto;
+      visibility: hidden;
+      opacity: 0;
+      z-index: -1;
+    }
+    .is-open {
+      visibility: visible;
+      opacity: 1;
+      z-index: 100;
+    }
+    </style>
     <body>
       <div id="app">
         <div class="container">
@@ -23,6 +40,7 @@
                   <tr>
                     <th>ID</th>
                     <th>タスク名</th>
+                    <th>編集</th>
                     <th>完了ボタン</th>
                   </tr>
                 </thead>
@@ -30,7 +48,8 @@
                   <tr v-for="todo in todos" v-bind:key="todo.id">
                     <td>@{{ todo.id }}</td>
                     <td>@{{ todo.title }}</td>
-                    <td><button class="btn btn-primary" v-on:click="deleteTodo(todo.id)">完了</button></td>
+                    <td><button class="btn btn-primary" v-on:click="openModal(todo.id)">編集</button></td>
+                    <td><button class="btn btn-warning" v-on:click="deleteTodo(todo.id)">完了</button></td>
                   </tr>
                 </tbody>
               </table>
@@ -45,9 +64,11 @@
               </div>
             </div>
           </div>
+          <div class="p-modal" v-bind:class="{'is-open': isModalActive}">
+            <p>モーダルテスト</p>
+          </div>
         </div>
       </div>
       <script src="{{ asset('js/app.js') }}"></script>
-      <!-- npmで生成したapp.jsを読み込んでいる -->
     </body>
 </html>

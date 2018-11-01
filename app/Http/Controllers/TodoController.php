@@ -7,26 +7,34 @@ use App\Models\Todo;
 
 class TodoController extends Controller
 {
+    private $todo;
+
+    public function __construct(Todo $todo)
+    {
+        $this->todo = $todo;
+    }
+
     public function getTodos()
     {
-        $todos = Todo::all();
+        $todos = $this->todo->all();
         return $todos;
     }
 
     public function addTodo(Request $request)
     {
-        $todo = new Todo;
-        $todo->title = $request->title;
-        $todo->save();
+        $input = $request->all();
+        $this->todo->fill($input)->save();
 
-        $todos = Todo::all();
+        $todos = $this->todo->all();
         return $todos;
     }
 
     public function deleteTodo(Request $request)
     {
-        $todo = Todo::where('id', $request->id)->delete();
-        $todos = Todo::all();
+        $id = $request->id;
+        $this->todo->find($id)->delete();
+
+        $todos = $this->todo->all();
         return $todos;
     }
 }

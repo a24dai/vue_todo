@@ -992,6 +992,7 @@ window.Vue = __webpack_require__(35);
 var app = new Vue({
   el: '#app',
   data: {
+    isModalActive: false,
     new_todo: '',
     todos: [] //←TODOを格納するための配列を用意
   },
@@ -999,9 +1000,9 @@ var app = new Vue({
     fetchTodos: function fetchTodos() {
       var _this = this;
 
-      //←axios.getでTODOリストを取得しています
+      //axios.getでTODOリストを取得
       axios.get('/api/get').then(function (res) {
-        _this.todos = res.data; //←取得したTODOリストをtodosに格納
+        _this.todos = res.data; //取得したTODOリストをtodosに格納
       });
     },
     addTodo: function addTodo() {
@@ -1022,10 +1023,16 @@ var app = new Vue({
       }).then(function (res) {
         _this3.todos = res.data;
       });
+    },
+    openModal: function openModal(id) {
+      this.toggleModal();
+    },
+    toggleModal: function toggleModal() {
+      this.isModalActive = !this.isModalActive;
     }
   },
   created: function created() {
-    //←インスタンス生成時にfetchTodos()を実行したいので、createdフックに登録します。
+    //インスタンス生成時にfetchTodos()を実行したいので、createdフックに登録
     this.fetchTodos();
   }
 });
